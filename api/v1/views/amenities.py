@@ -14,12 +14,14 @@ from models import storage
 from flask import jsonify, request
 from api.v1.views import app_views
 
+
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 def list_amenities():
     """retrieves all Amenity instances"""
     amenities_dict = storage.all(Amenity)
     amenities_list = [obj.to_dict() for obj in amenities_dict.values()]
     return jsonify(amenities_list)
+
 
 @app_views.route('/amenities/<id>', methods=['GET'], strict_slashes=False)
 def get_amenity(id):
@@ -29,6 +31,7 @@ def get_amenity(id):
         return jsonify(amenity.to_dict())
     else:
         return jsonify({"error": "Not found"}), 404
+
 
 @app_views.route('/amenities/<id>', methods=['DELETE'], strict_slashes=False)
 def delete_amenity(id):
@@ -40,6 +43,7 @@ def delete_amenity(id):
         return jsonify({}), 200
     else:
         return jsonify({"error": "Not found"}), 404
+
 
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)
 def create_amenity():
@@ -54,6 +58,7 @@ def create_amenity():
     storage.save()
     return jsonify(amenity.to_dict()), 201
 
+
 @app_views.route('/amenities/<id>', methods=['PUT'], strict_slashes=False)
 def update_amenity(id):
     """updates a amenity object based on id"""
@@ -63,9 +68,8 @@ def update_amenity(id):
     attrs = request.get_json()
     if not request.is_json:
         return jsonify({"error": "Not a JSON"}), 400
-    for k,v in attrs.items():
+    for k, v in attrs.items():
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, k, v)
     storage.save()
     return jsonify(amenity.to_dict()), 201
-    

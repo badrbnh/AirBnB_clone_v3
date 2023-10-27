@@ -13,7 +13,10 @@ from models import storage
 from flask import jsonify, request
 from api.v1.views import app_views
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>/cities',
+                 methods=['GET'],
+                 strict_slashes=False)
 def list_cities(state_id):
     """retrieves all City objects of a State"""
     state = storage.get(State, state_id)
@@ -21,6 +24,7 @@ def list_cities(state_id):
         return jsonify({"error": "Not found"}), 404
     cities_list = [city.to_dict() for city in state.cities]
     return jsonify(cities_list)
+
 
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
 def get_city(city_id):
@@ -30,6 +34,7 @@ def get_city(city_id):
         return jsonify(city.to_dict())
     else:
         return jsonify({"error": "Not found"}), 404
+
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'], strict_slashes=False)
 def delete_city(city_id):
@@ -42,7 +47,10 @@ def delete_city(city_id):
     else:
         return jsonify({"error": "Not found"}), 404
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>/cities',
+                 methods=['POST'],
+                 strict_slashes=False)
 def create_city(state_id):
     """creates a city object based on State's id"""
     state = storage.get(State, state_id)
@@ -53,11 +61,12 @@ def create_city(state_id):
     inst = request.get_json()
     if 'name' not in inst:
         return jsonify({"error": "Missing name"}), 400
-    inst["state_id"] = state_id 
+    inst["state_id"] = state_id
     city = City(**inst)
     storage.new(city)
     storage.save()
     return jsonify(city.to_dict()), 201
+
 
 @app_views.route('/cities/<id>', methods=['PUT'], strict_slashes=False)
 def update_city(id):
@@ -68,9 +77,8 @@ def update_city(id):
     attrs = request.get_json()
     if not request.is_json:
         return jsonify({"error": "Not a JSON"}), 400
-    for k,v in attrs.items():
+    for k, v in attrs.items():
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(city, k, v)
     storage.save()
     return jsonify(city.to_dict()), 201
-    

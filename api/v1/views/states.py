@@ -14,12 +14,16 @@ from models import storage
 from flask import jsonify, request
 from api.v1.views import app_views
 
-@app_views.route('/states', methods=['GET'], strict_slashes=False)
+
+@app_views.route('/states',
+                 methods=['GET'],
+                 strict_slashes=False)
 def list_states():
     """retrieves all state instances"""
     states_dict = storage.all(State)
     states_list = [obj.to_dict() for obj in states_dict.values()]
     return jsonify(states_list)
+
 
 @app_views.route('/states/<id>', methods=['GET'], strict_slashes=False)
 def get_state(id):
@@ -29,6 +33,7 @@ def get_state(id):
         return jsonify(state.to_dict())
     else:
         return jsonify({"error": "Not found"}), 404
+
 
 @app_views.route('/states/<id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(id):
@@ -40,6 +45,7 @@ def delete_state(id):
         return jsonify({}), 200
     else:
         return jsonify({"error": "Not found"}), 404
+
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
@@ -54,6 +60,7 @@ def create_state():
     storage.save()
     return jsonify(state.to_dict()), 201
 
+
 @app_views.route('/states/<id>', methods=['PUT'], strict_slashes=False)
 def update_state(id):
     """updates a state object based on id"""
@@ -63,9 +70,8 @@ def update_state(id):
     attrs = request.get_json()
     if not request.is_json:
         return jsonify({"error": "Not a JSON"}), 400
-    for k,v in attrs.items():
+    for k, v in attrs.items():
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(state, k, v)
     storage.save()
     return jsonify(state.to_dict()), 201
-    
