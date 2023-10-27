@@ -13,7 +13,7 @@ from models import storage
 from flask import jsonify, request
 from api.v1.views import app_views
 
-@app_views.route('places/<place_id>/reviews', methods=['GET'], strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews', methods=['GET'], strict_slashes=False)
 def list_reviews(place_id):
     """retrieves all Review objects of a Place"""
     place = storage.get(Place, place_id)
@@ -42,7 +42,7 @@ def delete_review(review_id):
     else:
         return jsonify({"error": "Not found"}), 404
 
-@app_views.route('places/<place_id>/reviews', methods=['POST'], strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews', methods=['POST'], strict_slashes=False)
 def create_review(place_id):
     """creates a review object based on Place's id"""
     place = storage.get(Place, place_id)
