@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""file for handling status"""
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
@@ -16,9 +17,11 @@ classes = {"amenities": Amenity, "cities": City,
 
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def get_status():
+    """method to get the status"""
     return jsonify({"status": "OK"})
 
 
 @app_views.route('/stats', methods=['GET'], strict_slashes=False)
 def get_stats():
+    """method to get the stats of a given class"""
     return jsonify({cl: storage.count(classes[cl]) for cl in classes.keys()})
