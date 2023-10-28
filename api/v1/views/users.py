@@ -5,7 +5,8 @@ default RESTFul API actions
 """
 
 from api.v1.views import app_views
-from flask import jsonify, request
+from flask import jsonify
+from flask import request
 from models import storage
 from models.user import User
 
