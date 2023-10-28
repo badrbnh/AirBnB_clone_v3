@@ -88,4 +88,4 @@ def update_review(id):
         if k not in ['id', 'created_at', 'updated_at', 'user_id', 'place_id']:
             setattr(review, k, v)
     storage.save()
-    return jsonify(review.to_dict()), 201
+    return jsonify(review.to_dict()), 200

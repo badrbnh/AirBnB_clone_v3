@@ -74,4 +74,4 @@ def update_state(id):
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(state, k, v)
     storage.save()
-    return jsonify(state.to_dict()), 201
+    return jsonify(state.to_dict()), 200

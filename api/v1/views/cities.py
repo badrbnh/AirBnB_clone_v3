@@ -81,4 +81,4 @@ def update_city(id):
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(city, k, v)
     storage.save()
-    return jsonify(city.to_dict()), 201
+    return jsonify(city.to_dict()), 200
